@@ -1,5 +1,21 @@
 # @changesets/cli
 
+## 2.2.0
+
+### Minor Changes
+
+- [`51a0d76`](https://github.com/atlassian/changesets/commit/51a0d766c7064b4c6a9d1490593522c6fcd02929) [#182](https://github.com/atlassian/changesets/pull/182) Thanks [@ajaymathur](https://github.com/ajaymathur)! - Updated the package to use the new `@changesets/logger` for logging.
+
+### Patch Changes
+
+- [`5ababa0`](https://github.com/atlassian/changesets/commit/5ababa08c8ea5ee3b4ff92253e2e752a5976cd27) [#201](https://github.com/atlassian/changesets/pull/201) Thanks [@ajaymathur](https://github.com/ajaymathur)! - Updated to use the Error classes from the @changesets/errors package
+
+- Updated dependencies [[`51a0d76`](https://github.com/atlassian/changesets/commit/51a0d766c7064b4c6a9d1490593522c6fcd02929), [`5ababa0`](https://github.com/atlassian/changesets/commit/5ababa08c8ea5ee3b4ff92253e2e752a5976cd27), [`5ababa0`](https://github.com/atlassian/changesets/commit/5ababa08c8ea5ee3b4ff92253e2e752a5976cd27)]:
+  - @changesets/logger@0.0.1
+  - @changesets/test-utils@0.0.1
+  - @changesets/config@0.2.2
+  - @changesets/errors@0.1.1
+
 ## 2.1.2
 
 ### Patch Changes

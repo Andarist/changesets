@@ -1,5 +1,14 @@
 # @changesets/config
 
+## 0.2.2
+
+### Patch Changes
+
+- [`5ababa0`](https://github.com/atlassian/changesets/commit/5ababa08c8ea5ee3b4ff92253e2e752a5976cd27) [#201](https://github.com/atlassian/changesets/pull/201) Thanks [@ajaymathur](https://github.com/ajaymathur)! - Updated to use the Error classes from the @changesets/errors package
+
+- Updated dependencies [[`5ababa0`](https://github.com/atlassian/changesets/commit/5ababa08c8ea5ee3b4ff92253e2e752a5976cd27)]:
+  - @changesets/errors@0.1.1
+
 ## 0.2.1
 
 ### Patch Changes
