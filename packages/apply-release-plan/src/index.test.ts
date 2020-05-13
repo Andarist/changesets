@@ -833,19 +833,19 @@ describe("apply release plan", () => {
         }
       );
 
-      let readmePath = changedFiles.find(a =>
+      let changelogPath = changedFiles.find(a =>
         a.endsWith(`pkg-a${path.sep}CHANGELOG.md`)
       );
-      let readmePathB = changedFiles.find(a =>
+      let changelogPathB = changedFiles.find(a =>
         a.endsWith(`pkg-b${path.sep}CHANGELOG.md`)
       );
 
-      if (!readmePath || !readmePathB)
+      if (!changelogPath || !changelogPathB)
         throw new Error(`could not find an updated changelog`);
-      let readme = await fs.readFile(readmePath, "utf-8");
-      let readmeB = await fs.readFile(readmePathB, "utf-8");
+      let changelog = await fs.readFile(changelogPath, "utf-8");
+      let changelogB = await fs.readFile(changelogPathB, "utf-8");
 
-      expect(readme.trim()).toEqual(outdent`# pkg-a
+      expect(changelog.trim()).toEqual(outdent`# pkg-a
 
       ## 1.1.0
       ### Minor Changes
@@ -856,7 +856,7 @@ describe("apply release plan", () => {
 
         - pkg-b@2.0.0`);
 
-      expect(readmeB.trim()).toEqual(outdent`# pkg-b
+      expect(changelogB.trim()).toEqual(outdent`# pkg-b
 
       ## 2.0.0`);
     });
@@ -910,8 +910,70 @@ describe("apply release plan", () => {
 
       expect(pkgAChangelogPath).toBeUndefined();
     });
+    it("should not list updated devDep", async () => {
+      let { changedFiles } = await testSetup(
+        "simple-dev-dep",
+        {
+          changesets: [
+            {
+              id: "quick-lions-devour",
+              summary: "Hey, let's have fun with testing!",
+              releases: [{ name: "pkg-a", type: "patch" }]
+            },
+            {
+              id: "great-toes-vanish",
+              summary: "Random stuff\n\nget it while it's hot!",
+              releases: [{ name: "pkg-b", type: "minor" }]
+            }
+          ],
+          releases: [
+            {
+              name: "pkg-a",
+              type: "patch",
+              oldVersion: "1.0.0",
+              newVersion: "1.0.1",
+              changesets: ["quick-lions-devour"]
+            },
+            {
+              name: "pkg-b",
+              type: "minor",
+              oldVersion: "1.0.0",
+              newVersion: "1.1.0",
+              changesets: ["great-toes-vanish"]
+            }
+          ],
+          preState: undefined
+        },
+        {
+          changelog: [
+            path.resolve(__dirname, "test-utils/simple-get-changelog-entry"),
+            null
+          ],
+          commit: false,
+          linked: [],
+          access: "restricted",
+          baseBranch: "master",
+          updateInternalDependencies: "patch"
+        }
+      );
 
-    test("should list multi-line same-type summaries correctly", async () => {
+      let changelogPath = changedFiles.find(a =>
+        a.endsWith(`pkg-a${path.sep}CHANGELOG.md`)
+      );
+      if (!changelogPath)
+        throw new Error(`could not find an updated changelog`);
+
+      let changelog = await fs.readFile(changelogPath, "utf-8");
+
+      expect(changelog.trim()).toEqual(outdent`# pkg-a
+
+      ## 1.0.1
+      ### Patch Changes
+
+      - Hey, let's have fun with testing!`);
+    });
+
+    it("should list multi-line same-type summaries correctly", async () => {
       const releasePlan = new FakeReleasePlan([
         {
           id: "some-id-1",
@@ -1028,7 +1090,7 @@ describe("apply release plan", () => {
 
       ## 1.2.1
       ### Patch Changes
-      
+
       - Hey, let's have fun with testing!
       - Updated dependencies [undefined]
         - pkg-a@1.0.4`);
@@ -1102,7 +1164,7 @@ describe("apply release plan", () => {
 
       ## 1.2.1
       ### Patch Changes
-      
+
       - Hey, let's have fun with testing!`);
     });
 
@@ -1186,7 +1248,7 @@ describe("apply release plan", () => {
 
       ## 1.2.1
       ### Patch Changes
-      
+
       - Hey, let's have fun with testing!
       - Updated dependencies [undefined]
         - pkg-c@2.1.0`);
@@ -1195,7 +1257,7 @@ describe("apply release plan", () => {
 
       ## 2.1.0
       ### Minor Changes
-      
+
       - Hey, let's have fun with testing!`);
     });
   });
